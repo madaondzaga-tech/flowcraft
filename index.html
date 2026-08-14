@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowcraft — Data & Web pour petites entreprises</title>
+<meta name="description" content="Flowcraft aide les petites entreprises et artisans à automatiser leurs fichiers Excel, créer des tableaux de bord et des sites vitrines simples.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-900:#12203B;
+    --navy-800:#1B2A4A;
+    --navy-700:#26385E;
+    --orange:#E8734A;
+    --orange-light:#F2A65A;
+    --paper:#F6F5F2;
+    --ink:#1E2433;
+    --ink-soft:#5B6478;
+    --white:#FFFFFF;
+    --line:#E4E1D9;
+    --radius:14px;
+    --maxw:1120px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{
+    font-family:'Space Grotesk', sans-serif;
+    line-height:1.1;
+    font-weight:700;
+  }
+
+  .mono{
+    font-family:'JetBrains Mono', monospace;
+    letter-spacing:0.04em;
+  }
+
+  a{color:inherit; text-decoration:none;}
+
+  img,svg{display:block; max-width:100%;}
+
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  :focus-visible{
+    outline:3px solid var(--orange);
+    outline-offset:3px;
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(18,32,59,0.92);
+    backdrop-filter:blur(8px);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:76px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    color:var(--white);
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:1.15rem;
+  }
+  .brand .dot{
+    width:10px; height:10px; border-radius:50%;
+    background:linear-gradient(135deg, var(--orange), var(--orange-light));
+    flex:none;
+  }
+  .nav-links{
+    display:flex; gap:32px; align-items:center;
+  }
+  .nav-links a{
+    color:#C9D0E0; font-size:0.92rem; font-weight:500;
+    transition:color .15s ease;
+  }
+  .nav-links a:hover{color:var(--white);}
+  .nav-cta{
+    background:var(--orange);
+    color:var(--white) !important;
+    padding:10px 18px;
+    border-radius:999px;
+    font-size:0.88rem !important;
+    font-weight:600 !important;
+  }
+  .nav-toggle{display:none; background:none; border:none; color:var(--white); font-size:1.6rem; cursor:pointer;}
+
+  @media(max-width:760px){
+    .nav-links{
+      position:absolute; top:76px; left:0; right:0;
+      background:var(--navy-900);
+      flex-direction:column; align-items:flex-start;
+      padding:20px 28px 28px;
+      gap:18px;
+      display:none;
+    }
+    .nav-links.open{display:flex;}
+    .nav-toggle{display:block;}
+    .nav-cta{align-self:flex-start;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:radial-gradient(120% 140% at 15% -10%, var(--navy-700), var(--navy-900) 60%);
+    color:var(--white);
+    padding:88px 0 96px;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:56px;
+    align-items:center;
+  }
+  .eyebrow{
+    display:inline-block;
+    color:var(--orange-light);
+    font-size:0.78rem;
+    text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(2.1rem, 4.2vw, 3.4rem);
+    margin-bottom:22px;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--orange-light);
+  }
+  .hero p.lead{
+    color:#C9D0E0;
+    font-size:1.08rem;
+    max-width:46ch;
+    margin-bottom:32px;
+  }
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:14px 26px;
+    border-radius:999px;
+    font-weight:600;
+    font-size:0.95rem;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary{
+    background:var(--orange);
+    color:var(--white);
+    box-shadow:0 10px 26px -8px rgba(232,115,74,0.6);
+  }
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{
+    border:1px solid rgba(255,255,255,0.28);
+    color:var(--white);
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,0.08);}
+
+  /* signature flow graphic */
+  .flow-viz{
+    position:relative;
+    height:280px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:var(--radius);
+    padding:28px 24px 24px;
+    overflow:hidden;
+  }
+  .flow-viz .cap{
+    font-size:0.7rem;
+    color:#8592AC;
+    text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  .bars{
+    position:absolute;
+    left:24px; right:24px; bottom:24px;
+    height:170px;
+    display:flex;
+    align-items:flex-end;
+    gap:14px;
+  }
+  .bars span{
+    flex:1;
+    border-radius:6px 6px 2px 2px;
+    background:linear-gradient(180deg, var(--orange-light), var(--orange));
+  }
+  .bars span:nth-child(1){background:linear-gradient(180deg,#5B6478,#3A4258); animation:settle1 1.4s cubic-bezier(.2,.8,.2,1) both;}
+  .bars span:nth-child(2){background:linear-gradient(180deg,#5B6478,#3A4258); animation:settle2 1.4s .08s cubic-bezier(.2,.8,.2,1) both;}
+  .bars span:nth-child(3){animation:settle3 1.4s .16s cubic-bezier(.2,.8,.2,1) both;}
+  .bars span:nth-child(4){animation:settle4 1.4s .24s cubic-bezier(.2,.8,.2,1) both;}
+  .bars span:nth-child(5){animation:settle5 1.4s .32s cubic-bezier(.2,.8,.2,1) both;}
+  .bars span:nth-child(6){animation:settle6 1.4s .4s cubic-bezier(.2,.8,.2,1) both;}
+
+  @keyframes settle1{0%{height:62%;}45%{height:20%;}100%{height:24%;}}
+  @keyframes settle2{0%{height:30%;}45%{height:70%;}100%{height:36%;}}
+  @keyframes settle3{0%{height:80%;}45%{height:35%;}100%{height:48%;}}
+  @keyframes settle4{0%{height:40%;}45%{height:90%;}100%{height:60%;}}
+  @keyframes settle5{0%{height:70%;}45%{height:45%;}100%{height:74%;}}
+  @keyframes settle6{0%{height:25%;}45%{height:60%;}100%{height:92%;}}
+
+  .flow-line{
+    position:absolute; left:0; top:0; width:100%; height:100%;
+    pointer-events:none;
+  }
+  .flow-line path{
+    fill:none;
+    stroke:var(--orange-light);
+    stroke-width:3;
+    stroke-linecap:round;
+    stroke-dasharray:900;
+    stroke-dashoffset:900;
+    animation:draw 1.2s 1s ease-out forwards;
+    opacity:0.9;
+  }
+  @keyframes draw{to{stroke-dashoffset:0;}}
+
+  @media(prefers-reduced-motion:reduce){
+    .bars span, .flow-line path{animation:none !important;}
+    .bars span:nth-child(1){height:24%;}
+    .bars span:nth-child(2){height:36%;}
+    .bars span:nth-child(3){height:48%;}
+    .bars span:nth-child(4){height:60%;}
+    .bars span:nth-child(5){height:74%;}
+    .bars span:nth-child(6){height:92%;}
+    .flow-line path{stroke-dashoffset:0;}
+  }
+
+  @media(max-width:900px){
+    .hero-grid{grid-template-columns:1fr;}
+    .flow-viz{height:220px;}
+  }
+
+  /* ---------- SECTION SHARED ---------- */
+  section{padding:88px 0;}
+  .section-head{
+    max-width:640px;
+    margin-bottom:52px;
+  }
+  .section-head .mono{
+    color:var(--orange);
+    font-size:0.78rem;
+    text-transform:uppercase;
+    display:block;
+    margin-bottom:14px;
+  }
+  .section-head h2{
+    font-size:clamp(1.7rem, 3vw, 2.3rem);
+    color:var(--navy-900);
+  }
+  .section-head p{
+    color:var(--ink-soft);
+    margin-top:14px;
+    font-size:1.02rem;
+  }
+
+  /* ---------- SERVICES ---------- */
+  .services{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+  }
+  .service-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:32px 28px;
+    display:flex; flex-direction:column; gap:16px;
+    opacity:0; transform:translateY(18px);
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .service-card.visible{opacity:1; transform:translateY(0);}
+  .service-tag{
+    align-self:flex-start;
+    background:#EFF1F5;
+    color:var(--navy-800);
+    font-size:0.72rem;
+    padding:5px 11px;
+    border-radius:999px;
+  }
+  .service-card h3{color:var(--navy-900); font-size:1.24rem;}
+  .service-card p{color:var(--ink-soft); font-size:0.96rem;}
+  .service-price{
+    margin-top:auto;
+    padding-top:14px;
+    border-top:1px dashed var(--line);
+    font-size:0.9rem;
+    color:var(--navy-800);
+    font-weight:600;
+  }
+  .service-price span{color:var(--ink-soft); font-weight:400;}
+
+  @media(max-width:900px){.services{grid-template-columns:1fr;}}
+
+  /* ---------- PROCESS ---------- */
+  .process{
+    background:var(--navy-900);
+    color:var(--white);
+  }
+  .process .section-head h2{color:var(--white);}
+  .process .section-head p{color:#AEB6C9;}
+  .steps{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:0;
+  }
+  .step{
+    padding:0 28px 0 0;
+    position:relative;
+  }
+  .step + .step{
+    padding-left:28px;
+    border-left:1px solid rgba(255,255,255,0.14);
+  }
+  .step .num{
+    font-family:'JetBrains Mono', monospace;
+    color:var(--orange-light);
+    font-size:0.85rem;
+    display:block;
+    margin-bottom:14px;
+  }
+  .step h3{font-size:1.1rem; margin-bottom:10px;}
+  .step p{color:#AEB6C9; font-size:0.92rem;}
+
+  @media(max-width:760px){
+    .steps{grid-template-columns:1fr; gap:32px;}
+    .step + .step{padding-left:0; border-left:none; border-top:1px solid rgba(255,255,255,0.14); padding-top:28px;}
+  }
+
+  /* ---------- WHY ---------- */
+  .why{
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:56px;
+    align-items:start;
+  }
+  .why-list{list-style:none; display:flex; flex-direction:column; gap:22px;}
+  .why-list li{
+    display:flex; gap:16px;
+    align-items:flex-start;
+  }
+  .why-list .mk{
+    flex:none;
+    width:30px; height:30px;
+    border-radius:8px;
+    background:#EFF1F5;
+    color:var(--orange);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.8rem;
+  }
+  .why-list h4{color:var(--navy-900); font-size:1rem; margin-bottom:4px;}
+  .why-list p{color:var(--ink-soft); font-size:0.92rem;}
+
+  .why-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:36px;
+  }
+  .why-card .mono{color:var(--orange); font-size:0.75rem; text-transform:uppercase;}
+  .why-card blockquote{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:1.3rem;
+    color:var(--navy-900);
+    margin:16px 0 20px;
+    line-height:1.35;
+  }
+  .why-card .sig{color:var(--ink-soft); font-size:0.9rem;}
+
+  @media(max-width:900px){.why{grid-template-columns:1fr;}}
+
+  /* ---------- CONTACT ---------- */
+  .contact{
+    background:linear-gradient(160deg, var(--navy-800), var(--navy-900));
+    color:var(--white);
+    border-radius:24px;
+    margin:0 28px;
+    padding:64px 44px;
+    text-align:center;
+  }
+  .contact h2{font-size:clamp(1.6rem,3vw,2.2rem); margin-bottom:16px;}
+  .contact p{color:#C9D0E0; max-width:50ch; margin:0 auto 32px;}
+  .contact-ctas{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+
+  footer{
+    padding:40px 0 60px;
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:0.85rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a href="#top" class="brand"><span class="dot"></span>Flowcraft</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="#services">Services</a>
+      <a href="#process">Comment ça marche</a>
+      <a href="#why">Pourquoi Flowcraft</a>
+      <a href="#contact" class="nav-cta">Audit gratuit</a>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow mono">Data &amp; web — sans complication</span>
+        <h1>Ton Excel n'a pas besoin d'être <em>compliqué</em>.</h1>
+        <p class="lead">Flowcraft aide les artisans, commerçants et petites entreprises à transformer des fichiers chaotiques en outils simples : Excel automatisé, tableau de bord clair, ou petit site pour être trouvé en ligne.</p>
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-primary">Demander un audit gratuit</a>
+          <a href="#services" class="btn btn-ghost">Voir les services</a>
+        </div>
+      </div>
+      <div class="flow-viz" aria-hidden="true">
+        <span class="cap mono">avant → après</span>
+        <div class="bars">
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <svg class="flow-line" viewBox="0 0 600 280" preserveAspectRatio="none">
+          <path d="M20,220 C140,200 200,160 300,120 C400,80 480,55 580,25"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="mono">Services</span>
+        <h2>Trois façons de gagner du temps</h2>
+        <p>Pas de jargon, pas d'usine à gaz : des solutions concrètes pour un problème précis.</p>
+      </div>
+      <div class="services">
+        <div class="service-card">
+          <span class="service-tag mono">EXCEL</span>
+          <h3>Nettoyage &amp; automatisation</h3>
+          <p>Ton fichier de suivi devient illisible ? On le remet en ordre et on ajoute des formules qui font le travail à ta place.</p>
+          <div class="service-price">À partir de <span>300€</span></div>
+        </div>
+        <div class="service-card">
+          <span class="service-tag mono">POWER BI</span>
+          <h3>Tableau de bord clair</h3>
+          <p>Un seul écran pour voir ton chiffre d'affaires, tes stocks ou ton activité, mis à jour automatiquement.</p>
+          <div class="service-price">À partir de <span>450€</span></div>
+        </div>
+        <div class="service-card">
+          <span class="service-tag mono">WEB</span>
+          <h3>Site vitrine simple</h3>
+          <p>Une page claire avec tes infos, tes horaires et tes coordonnées, pour qu'on te trouve facilement en ligne.</p>
+          <div class="service-price">À partir de <span>500€</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process" class="process">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="mono">Comment ça marche</span>
+        <h2>Trois étapes, aucune surprise</h2>
+        <p>Un premier échange gratuit avant tout engagement.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <span class="num">01 / audit</span>
+          <h3>On regarde ensemble</h3>
+          <p>30 minutes pour comprendre ton problème et voir si Flowcraft peut aider. Gratuit, sans engagement.</p>
+        </div>
+        <div class="step">
+          <span class="num">02 / proposition</span>
+          <h3>Un prix fixe, clair</h3>
+          <p>Tu reçois une proposition simple : ce qui est fait, en combien de temps, pour combien.</p>
+        </div>
+        <div class="step">
+          <span class="num">03 / livraison</span>
+          <h3>Un outil que tu comprends</h3>
+          <p>Livraison avec une explication pas à pas, pour que tu sois autonome ensuite.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="why">
+    <div class="wrap why">
+      <div>
+        <div class="section-head" style="margin-bottom:32px;">
+          <span class="mono">Pourquoi Flowcraft</span>
+          <h2>Une étudiante, des outils sérieux</h2>
+        </div>
+        <ul class="why-list">
+          <li>
+            <span class="mk mono">01</span>
+            <div><h4>Formation en cours</h4><p>BUT Science des Données à Pau, spécialisation exploration et modélisation statistique.</p></div>
+          </li>
+          <li>
+            <span class="mk mono">02</span>
+            <div><h4>Expérience terrain</h4><p>Pipeline de données déployé en entreprise (Promeca Pyrénées), projets d'analyse et de dashboards réels.</p></div>
+          </li>
+          <li>
+            <span class="mk mono">03</span>
+            <div><h4>Prix étudiants</h4><p>Des tarifs pensés pour les petites structures, pas pour les grands comptes.</p></div>
+          </li>
+        </ul>
+      </div>
+      <div class="why-card">
+        <span class="mono">Le principe</span>
+        <blockquote>« Je préfère un outil simple que tu utilises vraiment, à une usine à gaz que tu n'ouvres jamais. »</blockquote>
+        <p class="sig">— Flowcraft</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact">
+      <h2>Un fichier qui te complique la vie ?</h2>
+      <p>Parlons-en 30 minutes, sans engagement. Le premier audit est gratuit.</p>
+      <div class="contact-ctas">
+        <a class="btn btn-primary" href="mailto:contact.flowcraft241@gmail.com?subject=Audit%20gratuit%20Flowcraft">Écrire un mail</a>
+        <a class="btn btn-ghost" href="https://instagram.com/flowcraft_data" target="_blank" rel="noopener">Instagram @flowcraft_data</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">Flowcraft — Pau, France · © 2026</div>
+</footer>
+
+<script>
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open);
+  });
+
+  const cards = document.querySelectorAll('.service-card');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, {threshold:0.2});
+  cards.forEach(c => io.observe(c));
+</script>
+
+</body>
+</html>
